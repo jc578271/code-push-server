@@ -856,7 +856,19 @@ export class AzureStorage implements storage.Storage {
     let blobServiceClient: BlobServiceClient;
 
     if (process.env.EMULATED) {
-      const devConnectionString = "UseDevelopmentStorage=true";
+      const useSSL = true;
+    const raw_server_url = new URL(process.env["SERVER_URL"]);
+    const server_url = raw_server_url.protocol + "//" + raw_server_url.hostname;
+    const protocol = "https";
+    const blobPort = 10000;
+    const queuePort = 10001;
+    const tablePort = 10002;
+    const _accountName = accountName || "devstoreaccount1";
+    const _accountKey = accountKey || "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+    
+    const devConnectionString = !useSSL
+        ? "UseDevelopmentStorage=true"
+        : `DefaultEndpointsProtocol=${protocol};AccountName=${_accountName};AccountKey=${_accountKey};BlobEndpoint=${server_url}:${blobPort}/${_accountName};QueueEndpoint=${server_url}:${queuePort}/${_accountName};TableEndpoint=${server_url}:${tablePort}/${_accountName};`;
 
       tableServiceClient = TableServiceClient.fromConnectionString(devConnectionString);
       tableClient = TableClient.fromConnectionString(devConnectionString, AzureStorage.TABLE_NAME);
