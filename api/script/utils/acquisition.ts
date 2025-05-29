@@ -131,5 +131,8 @@ function getUpdatePackage(packageHistory: Package[], request: UpdateCheckRequest
   // Old plugins will only work with updates with app versions that are valid semver
   // (i.e. not a range), so we return the same version string as the requested one
   updateDetails.appVersion = request.appVersion;
+
+  const server_url = new URL(process.env["SERVER_URL"]); // <= add this
+  updateDetails.downloadURL = updateDetails.downloadURL.replace('http://127.0.0.1', `${server_url.protocol}//${server_url.hostname}`); // <= add this
   return { response: updateDetails, rollout: rollout };
 }
