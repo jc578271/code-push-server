@@ -5,6 +5,7 @@ import * as assert from "assert";
 import * as express from "express";
 import * as q from "q";
 import * as redis from "redis";
+import * as fs from "fs";
 
 import Promise = q.Promise;
 
@@ -102,7 +103,7 @@ export class RedisManager {
       const redisConfig = {
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,
-        auth_pass: process.env.REDIS_KEY,
+        auth_pass: process.env.REDIS_PASS,
         tls: {
           // Note: Node defaults CA's to those trusted by Mozilla
           rejectUnauthorized: true,
@@ -110,7 +111,7 @@ export class RedisManager {
           key: fs.readFileSync(process.env.REDIS_KEY, 'utf8'),
           ca: [fs.readFileSync(process.env.REDIS_CA_CRT, 'utf8')],
         },
-      };
+    };
       this._opsClient = redis.createClient(redisConfig);
       this._metricsClient = redis.createClient(redisConfig);
       this._opsClient.on("error", (err: Error) => {
