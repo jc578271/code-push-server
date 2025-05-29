@@ -8,9 +8,10 @@
     "start:env": "node -r dotenv/config ./bin/script/server.js dotenv_config_path=.env dotenv_config_silent=true",
     "clean": "rimraf bin",
     "build": "tsc && shx cp -r ./script/views ./bin/script",
+    "deploy": "sudo pm2 start ./bin/script/server.js --node-args=\"-r dotenv/config\" --name codepush --env production -- --dotenv_config_path=.env --dotenv_config_silent=true",
     "prettier": "prettier --write \"./**/*.ts\"",
     "lint": "npx eslint ./script/**/*.ts",
-    "lint:fix": "npx eslint ./script/**/*.ts --fix"
+    "lint:fix": "npx eslint ./script/**/*.ts --fix",
   },
   "repository": {
     "type": "git",
