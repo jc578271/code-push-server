@@ -36,6 +36,7 @@ node_modules
 # Test uploads and downloads
 /uploads
 /downloads
+/certs
 
 # JSON Storage persisted file
 JsonStorage.json
